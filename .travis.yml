@@ -16,28 +16,34 @@ before_install:
   - sh -e /etc/init.d/xvfb start
   - export DISPLAY=":99.0"
   - export MKL_THREADING_LAYER=GNU
+  - mkdir -p $HOME/bin
+  - curl -fsSL https://testspace-client.s3.amazonaws.com/testspace-linux.tgz | tar -zxvf- -C $HOME/bin
+  - testspace config url $TS_ORG.testspace.com
 
 install:
   - . ./scripts/create_testenv.sh
   - pip install coveralls travis-sphinx==2.0.0
 
 env:
-  - PYTHON_VERSION=2.7 FLOATX='float32' TESTCMD="--durations=10 --ignore=pymc3/tests/test_examples.py --cov-append --ignore=pymc3/tests/test_distributions_random.py --ignore=pymc3/tests/test_variational_inference.py --ignore=pymc3/tests/test_shared.py --ignore=pymc3/tests/test_smc.py --ignore=pymc3/tests/test_updates.py --ignore=pymc3/tests/test_posteriors.py --ignore=pymc3/tests/test_sampling.py"
-  - PYTHON_VERSION=2.7 FLOATX='float32' RUN_PYLINT="true" TESTCMD="--durations=10 --cov-append pymc3/tests/test_distributions_random.py pymc3/tests/test_shared.py pymc3/tests/test_smc.py pymc3/tests/test_sampling.py"
-  - PYTHON_VERSION=2.7 FLOATX='float32' TESTCMD="--durations=10 --cov-append pymc3/tests/test_examples.py pymc3/tests/test_posteriors.py"
-  - PYTHON_VERSION=2.7 FLOATX='float32' TESTCMD="--durations=10 --cov-append pymc3/tests/test_variational_inference.py pymc3/tests/test_updates.py"
-  - PYTHON_VERSION=2.7 FLOATX='float64' TESTCMD="--durations=10 --ignore=pymc3/tests/test_examples.py --cov-append --ignore=pymc3/tests/test_distributions_random.py --ignore=pymc3/tests/test_variational_inference.py --ignore=pymc3/tests/test_shared.py --ignore=pymc3/tests/test_smc.py --ignore=pymc3/tests/test_updates.py --ignore=pymc3/tests/test_posteriors.py --ignore=pymc3/tests/test_sampling.py"
-  - PYTHON_VERSION=2.7 FLOATX='float64' RUN_PYLINT="true" TESTCMD="--durations=10 --cov-append pymc3/tests/test_distributions_random.py pymc3/tests/test_shared.py pymc3/tests/test_smc.py pymc3/tests/test_sampling.py"
-  - PYTHON_VERSION=2.7 FLOATX='float64' TESTCMD="--durations=10 --cov-append pymc3/tests/test_examples.py pymc3/tests/test_posteriors.py"
-  - PYTHON_VERSION=3.6 FLOATX='float64' TESTCMD="--durations=10 --cov-append --ignore=pymc3/tests/test_examples.py --ignore=pymc3/tests/test_distributions_random.py --ignore=pymc3/tests/test_variational_inference.py --ignore=pymc3/tests/test_shared.py --ignore=pymc3/tests/test_smc.py --ignore=pymc3/tests/test_updates.py --ignore=pymc3/tests/test_posteriors.py --ignore=pymc3/tests/test_sampling.py"
-  - PYTHON_VERSION=3.6 FLOATX='float64' TESTCMD="--durations=10 --cov-append pymc3/tests/test_distributions_random.py pymc3/tests/test_shared.py pymc3/tests/test_smc.py pymc3/tests/test_sampling.py"
-  - PYTHON_VERSION=3.6 FLOATX='float64' BUILD_DOCS="true" TESTCMD="--durations=10 --cov-append pymc3/tests/test_examples.py pymc3/tests/test_posteriors.py"
-  - PYTHON_VERSION=3.6 FLOATX='float64' TESTCMD="--durations=10 --cov-append pymc3/tests/test_variational_inference.py pymc3/tests/test_updates.py"
+  - PYTHON_VERSION=2.7 FLOATX='float32' TESTCMD="--durations=10 --ignore=pymc3/tests/test_examples.py --cov-append --junit-xml=testresults.xml --ignore=pymc3/tests/test_distributions_random.py --ignore=pymc3/tests/test_variational_inference.py --ignore=pymc3/tests/test_shared.py --ignore=pymc3/tests/test_smc.py --ignore=pymc3/tests/test_updates.py --ignore=pymc3/tests/test_posteriors.py --ignore=pymc3/tests/test_sampling.py"
+  - PYTHON_VERSION=2.7 FLOATX='float32' RUN_PYLINT="true" TESTCMD="--durations=10 --cov-append --junit-xml=testresults.xml pymc3/tests/test_distributions_random.py pymc3/tests/test_shared.py pymc3/tests/test_smc.py pymc3/tests/test_sampling.py"
+  - PYTHON_VERSION=2.7 FLOATX='float32' TESTCMD="--durations=10 --cov-append --junit-xml=testresults.xml pymc3/tests/test_examples.py pymc3/tests/test_posteriors.py"
+  - PYTHON_VERSION=2.7 FLOATX='float32' TESTCMD="--durations=10 --cov-append --junit-xml=testresults.xml pymc3/tests/test_variational_inference.py pymc3/tests/test_updates.py"
+  - PYTHON_VERSION=2.7 FLOATX='float64' TESTCMD="--durations=10 --ignore=pymc3/tests/test_examples.py --cov-append --junit-xml=testresults.xml --ignore=pymc3/tests/test_distributions_random.py --ignore=pymc3/tests/test_variational_inference.py --ignore=pymc3/tests/test_shared.py --ignore=pymc3/tests/test_smc.py --ignore=pymc3/tests/test_updates.py --ignore=pymc3/tests/test_posteriors.py --ignore=pymc3/tests/test_sampling.py"
+  - PYTHON_VERSION=2.7 FLOATX='float64' RUN_PYLINT="true" TESTCMD="--durations=10 --cov-append --junit-xml=testresults.xml pymc3/tests/test_distributions_random.py pymc3/tests/test_shared.py pymc3/tests/test_smc.py pymc3/tests/test_sampling.py"
+  - PYTHON_VERSION=2.7 FLOATX='float64' TESTCMD="--durations=10 --cov-append --junit-xml=testresults.xml pymc3/tests/test_examples.py pymc3/tests/test_posteriors.py"
+  - PYTHON_VERSION=3.6 FLOATX='float64' TESTCMD="--durations=10 --cov-append --junit-xml=testresults.xml --ignore=pymc3/tests/test_examples.py --ignore=pymc3/tests/test_distributions_random.py --ignore=pymc3/tests/test_variational_inference.py --ignore=pymc3/tests/test_shared.py --ignore=pymc3/tests/test_smc.py --ignore=pymc3/tests/test_updates.py --ignore=pymc3/tests/test_posteriors.py --ignore=pymc3/tests/test_sampling.py"
+  - PYTHON_VERSION=3.6 FLOATX='float64' TESTCMD="--durations=10 --cov-append --junit-xml=testresults.xml pymc3/tests/test_distributions_random.py pymc3/tests/test_shared.py pymc3/tests/test_smc.py pymc3/tests/test_sampling.py"
+  - PYTHON_VERSION=3.6 FLOATX='float64' BUILD_DOCS="true" TESTCMD="--durations=10 --cov-append --junit-xml=testresults.xml pymc3/tests/test_examples.py pymc3/tests/test_posteriors.py"
+  - PYTHON_VERSION=3.6 FLOATX='float64' TESTCMD="--durations=10 --cov-append --junit-xml=testresults.xml pymc3/tests/test_variational_inference.py pymc3/tests/test_updates.py"
 
 script:
   - . ./scripts/test.sh $TESTCMD
   - . ./scripts/confirm_mpl_optional.sh
 
+after_script:
+   - testspace [Python-${PYTHON_VERSION}/${FLOATX}]testresults.xml{pymc3/tests}
+ 
 after_success:
   - if [[ "$BUILD_DOCS" == "true" ]]; then travis-sphinx deploy -c "docs.pymc.io"; fi
   - coveralls
